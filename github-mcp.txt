@@ -1,0 +1,4 @@
+set GITHUB_PAT=your_actual_token_here (take from .env file)
+
+
+gh repo create demo-project-initial --public --source=. --push  
