@@ -1,0 +1,15 @@
+{
+  "name": "sync-plugin",
+  "metadata": {
+    "description": "Standard Claude Code setup for our engineering team"
+  },
+  "owner": {
+    "name": "Engineering Team"
+  },
+  "plugins": [
+    {
+      "name": "sync-plugin",
+      "source": "./"
+    }
+  ]
+}
