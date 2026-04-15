@@ -5,6 +5,9 @@
 
 const jwt = require('jsonwebtoken');
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable must be set in production');
+}
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 
 /**
@@ -65,7 +68,7 @@ function extractBearerToken(authHeader) {
  */
 function getTokenTTL(token) {
   const decoded = decodeToken(token);
-  if (!decoded || !decoded.exp) return 0;
+  if (!decoded || !decoded.exp) {return 0;}
   const remaining = decoded.exp - Math.floor(Date.now() / 1000);
   return Math.max(0, remaining);
 }

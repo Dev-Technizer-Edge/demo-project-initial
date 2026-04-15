@@ -8,9 +8,27 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { logger } = require('../utils/logger');
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable must be set in production');
+}
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const REFRESH_EXPIRES_IN = process.env.REFRESH_EXPIRES_IN || '7d';
+
+/**
+ * Converts a duration string (e.g. '7d', '1h', '30m') to milliseconds.
+ *
+ * @param {string} duration
+ * @returns {number}
+ */
+function parseDurationMs(duration) {
+  const units = { s: 1000, m: 60000, h: 3600000, d: 86400000 };
+  const match = duration.match(/^(\d+)([smhd])$/);
+  if (!match) {return 7 * 86400000;}
+  return parseInt(match[1]) * units[match[2]];
+}
+
+const REFRESH_EXPIRES_MS = parseDurationMs(REFRESH_EXPIRES_IN);
 
 // In-memory store for demo purposes (would be a database in production)
 const refreshTokenStore = new Map();
@@ -65,7 +83,7 @@ function isTokenExpired(token) {
 
     const now = Math.floor(Date.now() / 1000);
 
-    return decoded.exp > now;
+    return decoded.exp < now;
   } catch (err) {
     return true;
   }
@@ -84,7 +102,7 @@ async function refreshToken(refreshToken) {
     throw new Error('Invalid refresh token');
   }
 
-  if (isTokenExpired(refreshToken)) {
+  if (storedData.expiresAt < Date.now()) {
     refreshTokenStore.delete(refreshToken);
     throw new Error('Refresh token expired');
   }
@@ -139,7 +157,8 @@ function generateRefreshToken(userId) {
   const token = uuidv4();
   refreshTokenStore.set(token, {
     userId,
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    expiresAt: Date.now() + REFRESH_EXPIRES_MS
   });
   return token;
 }
@@ -165,5 +184,6 @@ module.exports = {
   refreshToken,
   revokeToken,
   generateAccessToken,
-  generateRefreshToken
+  generateRefreshToken,
+  __test__: { refreshTokenStore }
 };
