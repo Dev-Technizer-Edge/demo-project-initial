@@ -59,6 +59,17 @@ function validateUUID(id) {
 }
 
 /**
+ * Validates an Indian mobile number.
+ * Requirements: exactly 10 digits, starting with 6, 7, 8, or 9.
+ *
+ * @param {string} mobile
+ * @returns {boolean}
+ */
+function validateIndianMobile(mobile) {
+  return typeof mobile === 'string' && /^[6-9]\d{9}$/.test(mobile.trim());
+}
+
+/**
  * Sanitizes a string by trimming whitespace and removing control characters.
  *
  * @param {string} input
@@ -74,5 +85,6 @@ module.exports = {
   validatePassword,
   validatePasswordStrength,
   validateUUID,
+  validateIndianMobile,
   sanitizeString
 };

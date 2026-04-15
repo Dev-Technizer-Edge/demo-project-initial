@@ -1,0 +1,15 @@
+{
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const f=JSON.parse(d).tool_input.file_path;if(!f)return;const cp=require('child_process'),fs=require('fs');const r=cp.spawnSync('npx',['eslint',f],{encoding:'utf8',shell:true});if(r.stdout||r.stderr){const msg='\\n### ESLint: '+f+' ('+new Date().toTimeString().slice(0,8)+')\\n```\\n'+(r.stdout||r.stderr)+'```\\n';fs.appendFileSync('.claude/eslint-log.md',msg);}cp.spawnSync('npx',['eslint','--fix',f],{shell:true});}catch(e){}})\""
+                    }
+                ]
+            }
+        ]
+    }
+}

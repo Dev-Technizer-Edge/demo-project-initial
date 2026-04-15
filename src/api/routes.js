@@ -6,7 +6,14 @@
 const express = require('express');
 const router = express.Router();
 const { loginUser, refreshToken, revokeToken } = require('../auth/authService');
-const { authenticate, validateBody } = require('./middleware');
+const { authenticate, validateBody, rateLimiter } = require('./middleware');
+
+// Stricter limit for login: 10 attempts per 15 minutes per IP
+const loginLimiter = rateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: 'Too many login attempts, please try again later.'
+});
 const { validateEmail, validatePassword } = require('../utils/validators');
 const { logger } = require('../utils/logger');
 
@@ -14,7 +21,7 @@ const { logger } = require('../utils/logger');
  * POST /api/auth/login
  * Authenticates a user and returns access + refresh tokens.
  */
-router.post('/login', validateBody(['email', 'password']), async (req, res, next) => {
+router.post('/login', loginLimiter, validateBody(['email', 'password']), async (req, res, next) => {
   try {
     const { email, password } = req.body;
 

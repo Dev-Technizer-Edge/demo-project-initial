@@ -1,6 +1,6 @@
 /**
  * Express Middleware
- * Request logging, authentication, body validation, and error handling.
+ * Request logging, authentication, body validation, error handling, and rate limiting.
  */
 
 const { verifyToken, extractBearerToken } = require('../auth/tokenHelper');
@@ -55,6 +55,42 @@ function validateBody(fields) {
 }
 
 /**
+ * Creates a fixed-window in-memory rate limiter middleware.
+ *
+ * @param {object} options
+ * @param {number} options.windowMs   - Window size in milliseconds
+ * @param {number} options.max        - Max requests allowed per window per IP
+ * @param {string} [options.message]  - Error message sent on 429
+ * @returns {Function} Express middleware
+ */
+function rateLimiter({ windowMs, max, message = 'Too many requests, please try again later.' }) {
+  /** @type {Map<string, { count: number, resetAt: number }>} */
+  const store = new Map();
+
+  return (req, res, next) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const entry = store.get(ip);
+
+    if (!entry || now >= entry.resetAt) {
+      store.set(ip, { count: 1, resetAt: now + windowMs });
+      return next();
+    }
+
+    entry.count += 1;
+
+    if (entry.count > max) {
+      const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
+      res.set('Retry-After', String(retryAfter));
+      logger.warn(`Rate limit exceeded for IP ${ip} on ${req.method} ${req.path}`);
+      return res.status(429).json({ error: message });
+    }
+
+    next();
+  };
+}
+
+/**
  * Global error handler — catches anything passed to next(err).
  */
 function errorHandler(err, req, res, _next) {
@@ -68,5 +104,6 @@ module.exports = {
   requestLogger,
   authenticate,
   validateBody,
-  errorHandler
+  errorHandler,
+  rateLimiter
 };

@@ -10,6 +10,9 @@ This project follows Conventional Commits. Valid types are: feat, fix, test,
 refactor, docs, chore, perf. Valid scopes are the folder names: auth, api,
 utils, config, tests.
 
+If the user provided an issue number in $ARGUMENTS, note it — you will
+append a closing reference at the end of the commit body.
+
 First run git status to see what files are modified, untracked, or already
 staged. Then run git add -A to stage all changes. Then run git diff --staged
 to inspect exactly what has been staged. Base the commit message entirely on
@@ -22,7 +25,8 @@ Format:
 
   - Bullet point explaining what changed and why, not how
   - One bullet per logical change group
-  - Reference issue numbers if visible in the diff (e.g. closes #204)
+
+  Closes #<issue-number>   ← include only if an issue number was provided
 
 Once the commit message is ready, run git commit -m "<message>" to commit.
 
