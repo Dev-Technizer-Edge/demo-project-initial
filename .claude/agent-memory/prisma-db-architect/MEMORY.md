@@ -1,0 +1,1 @@
+- [Project State — Pre-Prisma Baseline](project_state.md) — No Prisma installed; in-memory refreshTokenStore only; User and RefreshToken tables needed from scratch

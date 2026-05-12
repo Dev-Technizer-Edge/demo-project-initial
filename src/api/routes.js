@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const { loginUser, refreshToken, revokeToken } = require('../auth/authService');
 const { authenticate, validateBody, rateLimiter } = require('./middleware');
+const { getUserByEmail } = require('../db/userRepository');
 
 // Stricter limit for login: 10 attempts per 15 minutes per IP
 const loginLimiter = rateLimiter({
@@ -35,15 +36,8 @@ router.post('/login', loginLimiter, validateBody(['email', 'password']), async (
       });
     }
 
-    // In a real app, fetch userRecord from database
-    const mockUserRecord = {
-      id: 'user-001',
-      email,
-      passwordHash: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
-      role: 'user'
-    };
-
-    const result = await loginUser(email, password, mockUserRecord);
+    const userRecord = await getUserByEmail(email);
+    const result = await loginUser(email, password, userRecord);
 
     res.json({
       message: 'Login successful',

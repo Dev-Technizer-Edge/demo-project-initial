@@ -55,3 +55,54 @@
 
 ### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\sync-plugin\commands\commit.md (06:02:38)
 
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\authService.js (06:18:57)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\authService.js (06:19:10)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\authService.js (06:19:30)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\authService.js (06:19:41)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\tokenHelper.js (06:19:53)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\tests\authService.test.js (06:20:22)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\src\auth\authService.js (06:21:33)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\tests\authService.test.js (06:23:40)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\tests\authService.test.js (06:23:51)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\tests\authService.test.js (06:24:00)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\tests\authService.test.js (06:24:12)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agents\prisma-db-architect.md (06:32:01)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agents\prisma-db-architect.md (06:32:13)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agents\prisma-db-architect.md (06:32:35)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agents\prisma-db-architect.md (06:33:47)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agent-memory\prisma-db-architect\project_state.md (06:35:59)
+
+
+### ESLint: C:\Users\manis\Desktop\claude__training_session\demo-project-initial\.claude\agent-memory\prisma-db-architect\MEMORY.md (06:36:07)
+
