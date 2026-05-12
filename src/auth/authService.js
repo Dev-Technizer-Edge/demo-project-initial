@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const { logger } = require('../utils/logger');
+const userRepository = require('../db/userRepository');
 
 if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET environment variable must be set in production');
@@ -164,18 +165,17 @@ function generateRefreshToken(userId) {
 }
 
 /**
- * Placeholder — in production this would query the database.
+ * Fetches a user from the database by ID.
  *
  * @param {string} userId
  * @returns {Promise<object>}
  */
 async function getUserById(userId) {
-  // Simulated DB lookup
-  return {
-    id: userId,
-    email: 'user@example.com',
-    role: 'user'
-  };
+  const user = await userRepository.getUserById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
 }
 
 module.exports = {
